@@ -1,0 +1,24 @@
+---
+
+- name: Install tweepy
+  become: yes
+  pip:
+    name: ['tweepy']
+    state: latest
+  
+- name: Install couchdb
+  become: yes
+  pip:
+    name: ['couchdb']
+    state:  latest
+
+- name: Install textblob
+  become: yes
+  pip:
+    name: ['textblob']
+    state: latest
+ 
+- name: Install some NLTK corpora
+  become: yes
+  shell: |
+    python3 -m textblob.download_corpora

@@ -1,0 +1,14 @@
+---
+
+- name: Add kernel listen in /opt/couchdb/etc/vm.args
+  become: yes
+  blockinfile:
+    path: /opt/couchdb/etc/vm.args
+    block: |
+      -kernel inet_dist_listen_min 9100
+      -kernel inet_dist_listen_max 9200
+        
+- name: Reboot instance
+  become: yes
+  reboot:
+    reboot_timeout: 300
