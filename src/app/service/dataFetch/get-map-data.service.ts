@@ -9,6 +9,7 @@ import saRegions from '../../../assets/mapBoundry/saRegions.json';
 import waRegions from '../../../assets/mapBoundry/waRegions.json';
 import ntRegions from '../../../assets/mapBoundry/ntRegions.json';
 import vicRegions from '../../../assets/mapBoundry/vicRegions.json';
+import sa4Regions from '../../../assets/mapBoundry/SA4_2011.json';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,10 @@ export class GetMapDataService {
     
     getStateService(): Observable<any> {
       const heroes = of(stateRegions);
+      return heroes;
+    }
+    getSA4Service(): Observable<any> {
+      const heroes = of(sa4Regions);
       return heroes;
     }
     getMelbService(): Observable<any> {

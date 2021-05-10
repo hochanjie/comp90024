@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CrudOpsService {
     
-    private REST_API_SERVER = "http://172.26.130.174:5984/_utils";
+    private REST_API_SERVER = "admin:group45@http://172.26.131.35:5984/tweets/_all_docs?include_docs=true";
 
     constructor(private httpClient: HttpClient) { }
     

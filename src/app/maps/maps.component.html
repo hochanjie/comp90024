@@ -13,6 +13,7 @@
     <option value="">Select Region</option>
     <option value="melb">melbCoor</option>
     <option value="stateCoor">stateCoor</option>
+    <option value="SA4_2011">SA4_2011</option>
     <option value="nswRegionCoor">nswRegions</option>
     <option value="queensRegion">qlRegions</option>
     <option value="saRegions">saRegions</option>
@@ -21,17 +22,6 @@
     <option value="vicRegions">vicRegions</option>
 
 </select>
-
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" (click)="getNSWDataF()">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
 
 
 <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom"> 
