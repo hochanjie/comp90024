@@ -10,12 +10,20 @@ body {
   transition: margin .25s ease-out;
 }
 #sidebar-wrapper .sidebar-heading {
-  padding: 0.875rem 1.25rem;
+  padding: 0.5rem 0.25rem;
   font-size: 1.2rem;
 }
 #sidebar-wrapper .list-group {
   width: 5rem;
 }
+
+#sidebar-wrapper .list-group-item{
+    text-align: center;
+}
+#sidebar-wrapper .list-group-item-action{
+    color: white;
+}
+
 #page-content-wrapper {
   min-width: 100vw;
 }
