@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
+import { faHome,faChartPie, faMapMarked } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,6 +10,10 @@ import * as $ from 'jquery';
 export class SidebarComponent implements OnInit {
 
   constructor() { }
+    
+    faHome = faHome;
+    faChartPie = faChartPie;
+    faMapMarked = faMapMarked;
 
   ngOnInit(): void {
       $("#menu-toggle").click(function(e) {

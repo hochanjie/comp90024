@@ -11,20 +11,12 @@ import { MapsComponent } from './maps/maps.component';
 
 
 const routes: Routes = [
+    
     {
-//        path: '',
-//        component: AdminComponent,
-//        children: [
-//            {
-//                path: '',
-//                redirectTo: 'dashboard',
-//                pathMatch: 'full'
-//            }, 
-//            {
-//                path: 'dashboard',
-//                loadChildren: () => import('./pages/dashboard/dashboard-default/dashboard-default.module').then(m => m.DashboardDefaultModule)
-//            }
-//        ]
+        path:'',
+        component:HomeComponent
+    },
+    {
         path:'home',
         component:HomeComponent
     },{
