@@ -14,6 +14,7 @@ import { AgmCoreModule } from '@agm/core';
 import { MapsComponent } from './maps/maps.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import { CrudOpsService } from './service/RestApis';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -36,7 +37,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
       HttpClientModule,
       FontAwesomeModule 
   ],
-  providers: [],
+  providers: [CrudOpsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
