@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule,APP_INITIALIZER  } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,8 +15,11 @@ import { MapsComponent } from './maps/maps.component';
 
 import { HttpClientModule } from '@angular/common/http';
 //import { CrudOpsService } from './service/RestApis';
+import { ConfigService } from './service/config/config.service';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+
 
 @NgModule({
   declarations: [
@@ -37,7 +40,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
       HttpClientModule,
       FontAwesomeModule 
   ],
-  providers: [],
+  providers: [{ 
+	  provide : APP_INITIALIZER, 
+		multi : true, 
+		 deps : [ConfigService], 
+		 useFactory : (configService : ConfigService) =>  () => configService.loadAppConfig()
+	}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

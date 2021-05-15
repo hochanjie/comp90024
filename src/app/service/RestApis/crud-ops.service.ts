@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { HttpHeaders } from '@angular/common/http';
 
+import { ConfigService } from '../config/config.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ import { HttpHeaders } from '@angular/common/http';
 export class CrudOpsService {
 //    private REST_API_SERVER = "admin:group45@172.26.131.35:5984/tweets/_all_docs?include_docs=true";
     
-    constructor(private httpclient: HttpClient) { }
+    constructor(private httpclient: HttpClient,private configService: ConfigService) { }
     
     private REST_API_SERVER = "http://172.26.131.35:5984/_all_dbs";
     
