@@ -25,7 +25,7 @@ export class MapsComponent implements OnInit {
         this.lat = -28;
         this.lng = 137;
         this.zoom = 5;
-        this.geoJsonObject = "../../assets/mapBoundry/SA4_2011.geojson";
+        this.geoJsonObject = "../../assets/mapBoundry/SA4_2011.json";
         console.log(this.geoJsonObject)
 //        this._mapsAPILoader.load().then(() => {
 //            this.getSA4DataF()

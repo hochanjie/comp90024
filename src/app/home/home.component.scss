@@ -1,0 +1,21 @@
+.container-fluid{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.list-group-item{
+    background-color: unset;
+}
+
+.list-group-flush>.list-group-item{
+    border-width:0;
+}
+
+.card > .card-header > fa-icon{
+    float: right;
+    cursor: pointer;
+}
+
+agm-map {
+  height: 500px;
+}
