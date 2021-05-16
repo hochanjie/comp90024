@@ -50,7 +50,7 @@ def searchRecent(geoc):
             print(e)
             print("Reach request limit, Sleeping...")
             time.sleep(16 * 60)
-            return
+            continue
 
         if len(tweets) == 0:
             return

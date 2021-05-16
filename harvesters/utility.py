@@ -47,7 +47,8 @@ def parseStatus(status):
     if status.place is not None:
         result["place"] = {
             "type": status.place.place_type,
-            "full_name": status.place.full_name,
+            "name": status.place.name,
+            "state": str(status.place.full_name).split(", ")[1],
             "bounding_box": {"type": status.place.bounding_box.type,
                              "coordinates": status.place.bounding_box.coordinates,
                              }
