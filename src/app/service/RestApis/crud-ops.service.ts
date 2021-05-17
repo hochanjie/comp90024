@@ -67,6 +67,47 @@ export class CrudOpsService {
       }
     }
 
+    // Get sentiments by state
+    // If reducing, will provide summary statistics of the sentiments of that state instead
+    // If provided a place as a key, will give the sentiments of tweets in that state
+    public getSentimentsByState(key : string, reduce: boolean) : Observable<any> {
+      let view = "SentimentsByPlace";
+
+      if (reduce) {
+        let red = this.REDUCE;
+      }
+      else {
+        let red = this.NO_REDUCE;
+      }
+
+      if (key) {
+        return this.httpclient.get('${API_URL}/${view}?key=\"${key}\"&${red}');
+      } 
+      else {
+        return this.httpclient.get('${API_URL}/${view}?${red}');
+      }
+    }
+
+    // Get tweets by state
+    // If reducing, will provide the tweet counts of that state instead
+    // If provided a place as a key, will give the tweets/tweet counts of that state
+    public getTweetsByState(key : string, reduce: boolean) : Observable<any> {
+      let view = "TweetsByState";
+      if (reduce) {
+        let red = this.REDUCE;
+      }
+      else {
+        let red = this.NO_REDUCE;
+      }
+
+      if (key) {
+        return this.httpclient.get('${API_URL}/${view}?key=\"${key}\"&${red}');
+      } 
+      else {
+        return this.httpclient.get('${API_URL}/${view}?${red}');
+      }    
+    }
+
     // Get tweets by place
     // If reducing, will provide the tweet counts of that place instead
     // If provided a place as a key, will give the tweets/tweet counts of that place
