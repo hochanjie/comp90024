@@ -38,14 +38,14 @@ def searchTimeline(userID, depth=0):
     except tweepy.error.TweepError as e:
         print(e)
         return
-    if depth < 2:
-        friends = appAPI.followers_ids(userID)
-        friends.append(appAPI.friends_ids(userID))
-        for friendID in friends:
-            print("Start search friend timeline of " + str(userID))
-            searchTimeline(friendID, depth=1)
-    else:
-        return
+    # if depth < 2:
+    #     friends = appAPI.followers_ids(userID)
+    #     friends.append(appAPI.friends_ids(userID))
+    #     for friendID in friends:
+    #         print("Start search friend timeline of " + str(userID))
+    #         searchTimeline(friendID, depth=1)
+    # else:
+    #     return
 
 def searchRecent(geoc):
     print("Start search recent tweets")

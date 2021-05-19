@@ -14,7 +14,7 @@ with open('./SA2_10%.geojson') as f:
     data = json.load(f)
 for feature in data['features']:
     polygon = shape(feature['geometry'])
-    SA2Data.append(polygon)
+    SA2Data.append([feature['properties'].get('sa2_code_0'), feature['properties'].get('sa2_name16'), polygon])
 
 
 def saveRecord(record):
@@ -41,9 +41,9 @@ def saveRecord(record):
 
 def findArea(status):
     point = Point(float(status.coordinates.get('coordinates')[0]), float(status.coordinates.get('coordinates')[1]))
-    for p in SA2Data:
-        if p.contains(point):
-            return feature['properties'].get('sa2_code_0'), feature['properties'].get('sa2_name16')
+    for item in SA2Data:
+        if item[2].contains(point):
+            return item[0], item[1]
     return None
 
 
@@ -91,7 +91,6 @@ def parseStatus(status, city):
         "name": status.user.name,
         "location": status.user.location
     }
-    print(result)
     return result
 
 
