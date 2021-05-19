@@ -38,7 +38,8 @@ def saveRecord(record):
 def findArea(status):
     for feature in SA2Data['features']:
         polygon = shape(feature['geometry'])
-        if polygon.contains(status.coordinates):
+        point = Point(status.coordinates.get('coordinates')[0], status.coordinates.get('coordinates')[1])
+        if polygon.contains(point):
             return feature['properties'].get('sa2_code_0'), feature['properties'].get('sa2_name16')
 
 
@@ -54,7 +55,7 @@ def parseStatus(status, city):
     result = {
         "_id": status.id_str,
         "text": text,
-        "location": status.coordinates.coordinates,
+        "location": status.coordinates.get('coordinates'),
         "sentiment": TextBlob(text).sentiment.polarity,
         "timestamp": str(status.created_at),
         "SA2_code": SA2Code,
@@ -91,7 +92,7 @@ def processStatus(status):
         try:
             if status.place.country_code != 'AU':
                 return flag
-            elif status.place.place_type != "city" or status.place.place_type != "neighborhood":
+            elif status.place.place_type not in ["city", "neighborhood"]:
                 return flag
         except AttributeError:
             return flag
@@ -99,9 +100,8 @@ def processStatus(status):
             city = str(status.place.name).split(" ")[0]
         else:
             city = str(status.place.full_name).split(", ")[1]
-        if city in ["Melbourne","Sydney", "Brisbane", "Adelaide", "Perth"]:
+        if city in ["Melbourne", "Sydney", "Brisbane", "Adelaide", "Perth"]:
             record = parseStatus(status, city)
             saveRecord(record)
             flag = True
     return flag
-
