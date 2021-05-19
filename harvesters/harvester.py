@@ -1,28 +1,10 @@
 # Created by Yilin Xu (1201608) from group 45 of COMP90024 2021 Semester 1 Assignment 2 at the University of Melbourne
 
 import tweepy
-import time
+import socket
 import utility
+import constant
 from multiprocessing import Process
-
-CKEY = "5j9AREhFGUlhTIgEhum5twtdv"
-CSECRET = "cnydzUGUnE6s4stOBxgKZXRn9yr63hlw6H1ZgSPpDyJvBu0WvC"
-ATOKEN = "1382639314555707399-3iz2KLqvs1BVIgJYrgGgiybtOhxtui"
-ASECRET = "rfaLbjgenSEOozHF8Q7ntcAfBgYPR9BSwuSSgyN06gjNO"
-BTOKEN = "AAAAAAAAAAAAAAAAAAAAADSiPAEAAAAA%2F20avH89KOkIU0o0zvvK%2FJEIol0%3D357ZyO4Z48UaB0Upuno8ctbpycWdJGbOuwihaQKBKBYtwbxLkW"
-
-# harvester 1 cities
-SYDNEY_GC = "-33.880901,151.206103,100km"
-ADELAIDE_GC = "-34.928181,138.599931,100km"
-SYDNEY_BB = [150.2004, -34.2001, 151.5986, -33.1989]
-ADELAIDE_BB = [138.400761, -35.350029, 139.04999, -34.550264]
-
-userAuth = tweepy.OAuthHandler(CKEY, CSECRET)
-userAuth.set_access_token(ATOKEN, ASECRET)
-userAPI = tweepy.API(userAuth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
-
-appAuth = tweepy.AppAuthHandler(CKEY, CSECRET)
-appAPI = tweepy.API(appAuth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
 
 def searchTimeline(userID, depth=0):
@@ -46,6 +28,7 @@ def searchTimeline(userID, depth=0):
     #         searchTimeline(friendID, depth=1)
     # else:
     #     return
+
 
 def searchRecent(geoc):
     print("Start search recent tweets")
@@ -83,7 +66,7 @@ class MyStreamListener(tweepy.StreamListener):
         return True
 
 
-def filterStream():
+def filterStream(locations):
     print("Start Crawler")
 
     streamListener = MyStreamListener()
@@ -91,7 +74,7 @@ def filterStream():
 
     while True:
         try:
-            myStream.filter(locations=SYDNEY_BB + ADELAIDE_BB, languages=["en"])
+            myStream.filter(locations=locations, languages=["en"])
         except ConnectionRefusedError as e:
             print(e)
             exit(-1)
@@ -104,12 +87,34 @@ def filterStream():
 
 
 if __name__ == '__main__':
-    search1 = Process(target=searchRecent, args=(SYDNEY_GC,))
-    search2 = Process(target=searchRecent, args=(ADELAIDE_GC,))
-    stream = Process(target=filterStream)
-    search1.start()
-    search2.start()
-    stream.start()
-    search1.join()
-    search2.join()
-    stream.join()
+    hostName = socket.gethostname()
+    if hostName in ["harvesterserver-1", "harvesterserver-2", "harvesterserver-3"]:
+        userAuth = tweepy.OAuthHandler(constant.auth.get(hostName).ckey, constant.auth.get(hostName).csec)
+        userAuth.set_access_token(constant.auth.get(hostName).atoken, constant.auth.get(hostName).asec)
+        userAPI = tweepy.API(userAuth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+        appAuth = tweepy.AppAuthHandler(constant.auth.get(hostName).ckey, constant.auth.get(hostName).csec)
+        appAPI = tweepy.API(appAuth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+        search1, search2, stream = None, None, None
+        if hostName == "harvesterserver-1":
+            search1 = Process(target=searchRecent, args=(constant.SYDNEY_GC,))
+            search2 = Process(target=searchRecent, args=(constant.ADELAIDE_GC,))
+            stream = Process(target=filterStream, args=(constant.SYDNEY_BB + constant.ADELAIDE_BB,))
+        elif hostName == "harvesterserver-2":
+            search1 = Process(target=searchRecent, args=(constant.MELBOURNE_GC,))
+            search2 = Process(target=searchRecent, args=(constant.PERTH_GC,))
+            stream = Process(target=filterStream, args=(constant.MELBOURNE_BB + constant.PERTH_BB,))
+        elif hostName == "harvesterserver-3":
+            search1 = Process(target=searchRecent, args=(constant.BRISBANE_GC,))
+            stream = Process(target=filterStream, args=(constant.BRISBANE_BB,))
+        search1.start()
+        if search2 is not None:
+            search2.start()
+        stream.start()
+        search1.join()
+        if search2 is not None:
+            search2.join()
+        stream.join()
+    else:
+        print("Cannot find a matched server")
+
+

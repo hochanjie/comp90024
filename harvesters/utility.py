@@ -1,13 +1,11 @@
 # Created by Yilin Xu (1201608) from group 45 of COMP90024 2021 Semester 1 Assignment 2 at the University of Melbourne
 
 import json
-import couchdb
+from constant import dbName, couch
 from textblob import TextBlob
 from shapely.geometry import shape, Point
 
-couch = couchdb.Server('http://admin:group45@localhost:5984')
 
-dbName = "tweets"
 
 SA2Data = []
 with open('./SA2_10%.geojson') as f:
