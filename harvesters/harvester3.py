@@ -1,3 +1,5 @@
+# Created by Yilin Xu (1201608) from group 45 of COMP90024 2021 Semester 1 Assignment 2 at the University of Melbourne
+
 import tweepy
 import time
 import utility
@@ -21,7 +23,7 @@ appAuth = tweepy.AppAuthHandler(CKEY, CSECRET)
 appAPI = tweepy.API(appAuth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
 
-def searchTimeline(userID):
+def searchTimeline(userID, depth=0):
     print("Start search timeline of " + str(userID))
 
     try:
@@ -35,6 +37,15 @@ def searchTimeline(userID):
         print(e)
         print("Reach request limit, Sleeping...")
         time.sleep(16 * 60)
+        return
+
+    if depth < 2:
+        friends = appAPI.followers_ids(userID)
+        friends.append(appAPI.friends_ids(userID))
+        for friendID in friends:
+            print("Start search friend timeline of " + str(userID))
+            searchTimeline(friendID, depth=1)
+    else:
         return
 
 
