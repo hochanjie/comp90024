@@ -37,8 +37,6 @@ def searchTimeline(userID, depth=0):
                 utility.processStatus(status)
     except tweepy.error.TweepError as e:
         print(e)
-        print("Reach request limit, Sleeping...")
-        time.sleep(16 * 60)
         return
 
     if depth < 2:
@@ -61,8 +59,6 @@ def searchRecent(geoc):
                                    tweet_mode='extended')
         except tweepy.error.TweepError as e:
             print(e)
-            print("Reach request limit, Sleeping...")
-            time.sleep(16 * 60)
             continue
 
         if len(tweets) == 0:
@@ -106,7 +102,7 @@ def filterStream():
             exit(-1)
         except Exception as e:
             print(e)
-            time.sleep(60)
+            continue
 
 
 if __name__ == '__main__':
