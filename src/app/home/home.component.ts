@@ -32,8 +32,33 @@ export class HomeComponent implements OnInit {
         this._crudOps.sendGetRequest().subscribe((data: any[])=>{
               console.log(data);
     //          this.products = data;
-            })            
-
+            })
+        this._crudOps.getAllTweets().subscribe((data: any[])=>{
+              console.log(data);
+    //          this.products = data;
+            })
+//        this._crudOps.getSentimentsByPlace('victoria',false).subscribe((data: any[])=>{
+//              console.log(data);
+//            })
+//        this._crudOps.getTweetsByPlace('melbourne',false).subscribe((data: any[])=>{
+//              console.log(data);
+//            })
+        this._crudOps.getSentimentsByState('Victoria',false).subscribe((data: any[])=>{
+              console.log(data);
+    //          this.products = data;
+            })
+        this._crudOps.getTweetsByState('New South Wales',false).subscribe((data: any[])=>{
+              console.log(data);
+    //          this.products = data;
+            })
+        this._crudOps.getTweetsByTime(undefined,undefined,false).subscribe((data: any[])=>{
+              console.log(data);
+    //          this.products = data;
+            })
+        this._crudOps.getTweetsBySentiments(undefined,undefined,false).subscribe((data: any[])=>{
+              console.log(data);
+    //          this.products = data;
+            })
     }
     clicked(clickEvent) {
         console.log(clickEvent);
@@ -54,10 +79,7 @@ export class HomeComponent implements OnInit {
                 this.zoom = 4;
                 this.geoJsonObject = this._getMapData.getStateService();
             });
-        }
-        
-
-        
+        }        
     }
     
     

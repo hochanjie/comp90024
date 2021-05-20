@@ -24,8 +24,6 @@
 </select>
 
 
-<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom"> 
-    
 <!--
     <agm-marker 
       *ngFor="let m of markers; let i = index"
@@ -42,9 +40,18 @@
     
     </agm-marker>
 -->
+<!--
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom"> 
+    
     
      
     <agm-data-layer [geoJson]="geoJsonObject" (layerClick)="clicked($event)" [style]="styleFunc"></agm-data-layer>
+</agm-map>
+-->
+
+
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">      
+    <agm-data-layer [geoJson]="geoJsonObject1" (layerClick)="clicked($event)" [style]="styleFunc"></agm-data-layer>
 </agm-map>
 
 <!--
