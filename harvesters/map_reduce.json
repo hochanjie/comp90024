@@ -1,0 +1,32 @@
+{
+  "views": {
+    "AllTweets": {
+      "map": "function (doc) {\n  emit(doc._id, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
+    },
+    "SentimentsByState": {
+      "reduce": "_stats",
+      "map": "function (doc) {\n  emit(doc.place.state, doc.sentiment);\n}"
+    },
+    "TweetsByState": {
+      "reduce": "_count",
+      "map": "function (doc) {\n  emit(doc.place.state, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
+    },
+    "SentimentsByPlace": {
+      "reduce": "_stats",
+      "map": "function (doc) {\n  emit(doc.place.name, doc.sentiment);\n}"
+    },
+    "TweetsByPlace": {
+      "reduce": "_count",
+      "map": "function (doc) {\n  emit(doc.place.name, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
+    },
+    "TweetsByTime": {
+      "reduce": "_count",
+      "map": "function (doc) {\n  emit(doc.timestamp, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
+    },
+    "TweetsBySentiment": {
+      "reduce": "_count",
+      "map": "function (doc) {\n  emit(doc.sentiment, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
+    }
+  },
+  "language": "javascript"
+}

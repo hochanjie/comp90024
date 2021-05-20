@@ -4,4 +4,5 @@ export class Tweets {
   location: string; 
   time: string;
   place: string;
+  state: string;
 }
