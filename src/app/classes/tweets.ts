@@ -1,8 +1,8 @@
 export class Tweets {
-  text: string;
-  sentiment: number; 
-  location: string; 
-  time: string;
-  place: string;
-  state: string;
+  location: [number];
+  sentiment: number;
+  timestamp: string;
+  SA2_code: string;
+  SA2_name: string; 
+  city: string;
 }
