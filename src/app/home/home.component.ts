@@ -23,43 +23,89 @@ export class HomeComponent implements OnInit {
     geoJsonObject: any;
     lat: number;
     lng: number;
-    zoom:number;  
+    zoom:number;
+    public getTweetsByCity:any;
+    public getSentimentsByCity:any;
+    public markers:any;
+    public currentCity:any;
+
+    
 
     constructor(private _crudOps: CrudOpsService,private _mapsAPILoader: MapsAPILoader,private _getMapData: GetMapDataService) { }
         
-    ngOnInit(): void {
-      
-        this._crudOps.sendGetRequest().subscribe((data: any[])=>{
-              console.log(data);
-    //          this.products = data;
-            })
+    ngOnInit(): void {        
+//        this._crudOps.sendGetRequest().subscribe((data: any[])=>{
+//              console.log(data);
+//            })
+        
+        //adelaide
+        this.lat = -35;
+        this.lng = 138.5;
+        this.zoom = 11;
+        this.currentCity = "Adelaide";
+
         this._crudOps.getAllTweets().subscribe((data: any[])=>{
-              console.log(data);
-    //          this.products = data;
-            })
-//        this._crudOps.getSentimentsByPlace('victoria',false).subscribe((data: any[])=>{
-//              console.log(data);
-//            })
-//        this._crudOps.getTweetsByPlace('melbourne',false).subscribe((data: any[])=>{
-//              console.log(data);
-//            })
-        this._crudOps.getSentimentsByState('Victoria',false).subscribe((data: any[])=>{
-              console.log(data);
-    //          this.products = data;
-            })
-        this._crudOps.getTweetsByState('New South Wales',false).subscribe((data: any[])=>{
-              console.log(data);
-    //          this.products = data;
+              console.log("getAllTweets",data);
             })
         this._crudOps.getTweetsByTime(undefined,undefined,false).subscribe((data: any[])=>{
-              console.log(data);
-    //          this.products = data;
+              console.log("getTweetsByTime",data);
             })
         this._crudOps.getTweetsBySentiments(undefined,undefined,false).subscribe((data: any[])=>{
-              console.log(data);
-    //          this.products = data;
+              console.log("getTweetsBySentiments",data);
             })
+
+
+        this._crudOps.getSentimentsByCity(undefined,true).subscribe((data: any)=>{
+              console.log("getSentimentsByCity",data);
+                this.getSentimentsByCity = data.rows;
+            })
+
+
+        this._crudOps.getSentimentsBySA2Code(undefined,true).subscribe((data: any[])=>{
+              console.log("getSentimentsBySA2Code",data);
+            })
+        this._crudOps.getSentimentsBySA2NAme(undefined,false).subscribe((data: any[])=>{
+              console.log("getSentimentsBySA2NAme",data);
+            })
+
+
+
+        this._crudOps.getTweetsByCity(undefined,false).subscribe((data: any)=>{
+                this.markers = data.rows            
+        })
+        this._crudOps.getTweetsByCity(undefined,true).subscribe((data: any)=>{
+            this.getTweetsByCity = data.rows
+               
+        })
+
+
+
+
+        this._crudOps.getTweetsBySA2Code(undefined,false).subscribe((data: any[])=>{
+              console.log("getTweetsBySA2Code",data);
+            })
+        this._crudOps.getTweetsBySA2Name(undefined,false).subscribe((data: any[])=>{
+              console.log("getTweetsBySA2Name",data);
+            })
+    
     }
+    
+    
+    cityChange(cityName){
+        console.log(cityName)
+        this._crudOps.getTweetsByCity(cityName,false).subscribe((data: any)=>{
+            this.markers = data.rows
+            this.currentCity = cityName;
+        })
+    }
+    
+    
+    clickedMarker(marker:any) {
+        console.log(`clicked the marker: ${marker}`);
+        console.log(`clicked the marker: ${marker.value.SA2_name}`);
+        
+      }
+    //For map
     clicked(clickEvent) {
         console.log(clickEvent);
     }
@@ -84,7 +130,6 @@ export class HomeComponent implements OnInit {
     
     
     
-  
   
   //RadarChart
     public radarChartOptions: RadialChartOptions = {

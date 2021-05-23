@@ -109,38 +109,45 @@
             </div>
         </div>
     </div>
-    
     <div class="row">
         <table class="table">
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
+              <th scope="col">City</th>
+              <th scope="col">TweetCount</th>
+              <th scope="col">SentiSum</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
+            <tr *ngFor="let city of getSentimentsByCity; let i=index" (click)="cityChange(city.key)">
+              <th scope="row">{{i}}</th>
+              <td>{{city.key}}</td>
+              <td>{{city.value.count}}</td>
+              <td>{{city.value.sum}}</td>
             </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td>@twitter</td>
-            </tr>
+            
           </tbody>
         </table>
+    </div>
+    <div class="row">
+        <h2>GetTweetsByCity</h2>
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+            <ng-container *ngFor="let m of markers; let i = index">
+                <agm-marker *ngIf="m.value.city == currentCity"
+                  [latitude]="m.value.location[1]"
+                  [longitude]="m.value.location[0]"
+                  (markerClick)="clickedMarker(m)">
+
+                    <agm-info-window>
+                        <strong>SA2_name - {{m.value.SA2_name}}</strong><br>
+                        <strong>city - {{m.value.city}}</strong><br>
+                        <strong>sentiment - {{m.value.sentiment}}</strong><br>
+                    </agm-info-window>
+
+                </agm-marker>
+            </ng-container>
+        </agm-map>
     </div>
     
 <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
