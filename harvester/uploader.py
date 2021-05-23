@@ -3,10 +3,11 @@
 import json
 import couchdb
 
-sa2 = open('./AURIN Dataset/SA2_10%.geojson', 'r')
-homeless = open('./AURIN Dataset/SA2_homeless_2016.json', 'r')
-income = open('./AURIN Dataset/SA2_income_2016.json', 'r')
-population = open('./AURIN Dataset/SA2_population_2016.json', 'r')
+sa2 = open('/home/ubuntu/comp90024/AURIN Dataset/SA2_10%.geojson', 'r')
+homeless = open('/home/ubuntu/comp90024/AURIN Dataset/SA2_homeless_2016.json', 'r')
+income = open('/home/ubuntu/comp90024/AURIN Dataset/SA2_income_2016.json', 'r')
+population = open('/home/ubuntu/comp90024/AURIN Dataset/SA2_population_2016.json', 'r')
+
 
 with open('/home/ubuntu/comp90024/ansible/IP.txt', 'r') as f:
     ip = f.readline().strip()
