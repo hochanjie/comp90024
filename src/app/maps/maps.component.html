@@ -22,6 +22,12 @@
     <option value="vicRegions">vicRegions</option>
 
 </select>
+<select class="dropdown" (change)="changeScene($event)">    
+    <option value="">Select Scene</option>
+    <option value="0">income_obj</option>
+    <option value="1">population_obj</option>
+    <option value="2">homeless_obj</option>
+</select>
 
 
 <!--
@@ -53,7 +59,7 @@
 <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">      
     <agm-data-layer [geoJson]="geoJsonObject1" (layerClick)="clicked($event)" [style]="styleFunc"></agm-data-layer>
 </agm-map>
-
+<!--<div id="mapContainer" style="height: 500px"></div>-->
 <!--
 
 <ul>

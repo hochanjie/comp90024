@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-//import stateRegions from '../../../assets/mapBoundry/stateCoor.json';
-//import melbRegions from '../../../assets/mapBoundry/melb.json';
-//import nswRegions from '../../../assets/mapBoundry/nswRegionCoor.json';
-//import qlRegions from '../../../assets/mapBoundry/queensRegion.json';
-//import saRegions from '../../../assets/mapBoundry/saRegions.json';
-//import waRegions from '../../../assets/mapBoundry/waRegions.json';
-//import ntRegions from '../../../assets/mapBoundry/ntRegions.json';
-//import vicRegions from '../../../assets/mapBoundry/vicRegions.json';
-//import sa4Regions from '../../../assets/mapBoundry/SA4_2011.json';
+
+import homeless_obj from "../../../assets/mapBoundry/AURIN/SA2_homeless_2016.json";
+import population_obj from "../../../assets/mapBoundry/AURIN/SA2_population_2016.json";
+import income_obj from "../../../assets/mapBoundry/AURIN/SA2_income_2016.json";
 
 @Injectable({
   providedIn: 'root'
@@ -46,33 +41,33 @@ export class GetMapDataService {
       return '../../assets/mapBoundry/vicRegions.json';
     }
     
-    homeless_obj:any = "../../assets/mapBoundry/AURIN/SA2_homeless_2016.json"
-    income_obj:any = "../../assets/mapBoundry/AURIN/SA2_income_2016.json"
-    population_obj:any = "../../assets/mapBoundry/AURIN/SA2_population_2016.json"
+    getSA2_URL(){
+        return '../../assets/mapBoundry/AURIN/SA2_10.json';
+    }
     
     
     // input the name of the suburb, output the number of homeless people in that area
     getDataFromSA2NameHomeless(name){
-        for (let i = 0; i < this.homeless_obj.features.length; i++){
-            if (this.homeless_obj.features[i].properties.sa2_name_2016 == name){
-                return this.homeless_obj.features[i].properties.hl_p_homeless_tot
+        for (let i = 0; i < homeless_obj.features.length; i++){
+            if (homeless_obj.features[i].properties.sa2_name_2016 == name){
+                return homeless_obj.features[i].properties.hl_p_homeless_tot
             }
         }
     }
 
     // input the name of the suburb, output the average income of that area
     getDataFromSA2NameIncome(name){
-        for (let i = 0; i < this.income_obj.features.length; i++){
-            if (this.income_obj.features[i].properties.sa2_name16 == name){
-                return this.income_obj.features[i].properties.mean_aud_2014_15
+        for (let i = 0; i < income_obj.features.length; i++){
+            if (income_obj.features[i].properties.sa2_name16 == name){
+                return income_obj.features[i].properties.mean_aud_2014_15
             }
         }
     }
     // input the name of the suburb, output the population of that area
     getDataFromSA2NamePopulation(name){
-        for (let i = 0; i < this.population_obj.features.length; i++){
-            if (this.population_obj.features[i].properties.sa2_name == name){
-                return this.population_obj.features[i].properties.population
+        for (let i = 0; i < population_obj.features.length; i++){
+            if (population_obj.features[i].properties.sa2_name == name){
+                return population_obj.features[i].properties.population
             }
         }
     }
