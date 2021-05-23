@@ -1,0 +1,10 @@
+---
+
+# Created by Yilin Xu (1201608) from group 45 of COMP90024 2021 Semester 1 Assignment 2 at the University of Melbourne
+
+- name: Install Nginx
+  become: yes
+  apt:
+    name: ['nginx']
+    state: latest
+    update_cache: yes

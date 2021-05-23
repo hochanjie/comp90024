@@ -1,0 +1,54 @@
+---
+
+# Created by Yilin Xu (1201608) from group 45 of COMP90024 2021 Semester 1 Assignment 2 at the University of Melbourne
+
+- name: Add couchdb key
+  become: yes
+  shell: |
+    curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add -
+
+- name: Add couchdb repository
+  become: yes
+  shell: |
+    echo "deb https://apache.bintray.com/couchdb-deb focal main" | sudo tee -a /etc/apt/sources.list
+
+- name: Copy installation script from local to remote
+  become: yes
+  copy:
+    src: ./install-couchdb.sh
+    dest: /home/ubuntu/install-couchdb.sh
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+
+- name: Change installation script permissions
+  become: yes
+  shell: |
+    chmod 777 /home/ubuntu/install-couchdb.sh
+
+- name: Install couchdb
+  become: yes
+  command: sh /home/ubuntu/install-couchdb.sh
+
+- name: Add kernel listen in /opt/couchdb/etc/vm.args
+  become: yes
+  blockinfile:
+    path: /opt/couchdb/etc/vm.args
+    block: |
+      -kernel inet_dist_listen_min 9100
+      -kernel inet_dist_listen_max 9200
+        
+- name: Reboot instance
+  become: yes
+  reboot:
+    reboot_timeout: 300
+
+- name: Edit /opt/couchdb/etc/local.ini
+  shell: | 
+    line=$(head -n 1 /home/ubuntu/IP.txt)
+    sed -i  "/\[httpd\]/a [cors]\norigins = http://localhost:4200, http://$line" /opt/couchdb/etc/local.ini
+    sed -i  '/\[httpd\]/a enable_cors = true' /opt/couchdb/etc/local.ini
+
+- name: Restart couchdb
+  shell: | 
+    sudo service couchdb restart

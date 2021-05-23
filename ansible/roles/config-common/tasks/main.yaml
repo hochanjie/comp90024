@@ -1,0 +1,60 @@
+---
+
+# Created by Yilin Xu (1201608) from group 45 of COMP90024 2021 Semester 1 Assignment 2 at the University of Melbourne
+
+- name: Add proxy in /etc/environment
+  become: yes
+  blockinfile:
+    path: /etc/environment
+    block: |
+      HTTP_PROXY=http://wwwproxy.unimelb.edu.au:8000/
+      HTTPS_PROXY=http://wwwproxy.unimelb.edu.au:8000/
+      http_proxy=http://wwwproxy.unimelb.edu.au:8000/
+      https_proxy=http://wwwproxy.unimelb.edu.au:8000/
+      no_proxy=localhost,127.0.0.1,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org.au,.storage.unimelb.edu.au,.cloud.unimelb.edu.au
+  
+- name: Reboot instance
+  become: yes
+  reboot:
+    reboot_timeout: 300
+
+- name: Install pip
+  become: yes
+  apt:
+    name: ['python3-pip']
+    state: latest
+    update_cache: yes
+
+- name: Update pip
+  become: yes
+  pip:
+    name: ['pip']
+    state: latest
+
+- name: Check whether local git directory exists
+  stat:
+      path: /home/ubuntu/comp90024
+  register: stat_result
+
+- name: Remove directory if it exists
+  shell: | 
+    sudo rm -r /home/ubuntu/comp90024
+  when: stat_result.stat.exists == True  
+
+- name: clone from github
+  shell: |
+    git clone 'https://xuyilin0121:Thranduil2000121@github.com/hochanjie/comp90024.git'
+
+- name: Copy IP.txt from local to remote
+  become: yes
+  copy:
+    src: ./IP.txt
+    dest: /home/ubuntu/IP.txt
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+
+- name: Change IP.txt permissions
+  become: yes
+  shell: |
+    chmod 777 /home/ubuntu/IP.txt

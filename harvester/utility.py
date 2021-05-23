@@ -8,7 +8,7 @@ from shapely.geometry import shape, Point
 
 
 SA2Data = []
-with open('./SA2_10%.geojson') as f:
+with open('/home/ubuntu/comp90024/AURIN Dataset/SA2_10%.geojson') as f:
     data = json.load(f)
 for feature in data['features']:
     polygon = shape(feature['geometry'])

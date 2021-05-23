@@ -1,0 +1,51 @@
+---
+
+# Created by Yilin Xu (1201608) from group 45 of COMP90024 2021 Semester 1 Assignment 2 at the University of Melbourne
+
+- name: Create an instance
+  os_server:
+    name: '{{ item.name }}'
+    image: '{{ instance_image }}'
+    key_name: '{{ item.instance_key_name }}'
+    flavor: '{{ item.instance_flavor }}'
+    availability_zone: '{{ availability_zone }}'
+    security_groups: '{{ sg_names }}'
+    volumes: '{{ item.volumes }}'
+    auto_floating_ip: yes
+    wait: yes
+    timeout: 600
+    state: present
+  loop: '{{ instances }}'
+  register: os_instance
+
+- name: Wait for connection
+  wait_for:
+    host: "{{ item.openstack.public_v4 }}"
+    port: 22
+    timeout: 300
+    search_regex: OpenSSH
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
+  
+- name: Add harvesterserver
+  add_host:
+    name: "{{ item.openstack.public_v4 }}"
+    groups: harvesterserver
+  with_items: "{{ os_instance.results }}"
+  when:
+    - item.openstack.name != "webserver"
+    
+- name: Add webserver
+  add_host:
+    name: "{{ item.openstack.public_v4 }}"
+    groups: webserver
+  with_items: "{{ os_instance.results }}"
+  when:
+    - item.openstack.name == "webserver"
+
+- name: Add IP addresses to IP.txt
+  lineinfile:
+    path: ./IP.txt
+    line: '{{ item.openstack.public_v4 }}'
+    state: present
+  loop: '{{ os_instance.results }}'

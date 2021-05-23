@@ -1,0 +1,33 @@
+---
+
+# Created by Yilin Xu (1201608) from group 45 of COMP90024 2021 Semester 1 Assignment 2 at the University of Melbourne
+
+- name: Install tweepy
+  become: yes
+  pip:
+    name: ['tweepy']
+    state: latest
+  
+- name: Install couchdb
+  become: yes
+  pip:
+    name: ['couchdb']
+    state:  latest
+
+- name: Install textblob
+  become: yes
+  pip:
+    name: ['textblob']
+    state: latest
+ 
+- name: Install some NLTK corpora
+  become: yes
+  shell: |
+    python3 -m textblob.download_corpora
+
+- name: Install shapely
+  become: yes
+  apt:
+    name: ['python3-shapely']
+    state: latest
+    update_cache: yes
