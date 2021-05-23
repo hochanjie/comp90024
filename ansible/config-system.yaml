@@ -39,6 +39,6 @@
     command: python3 /home/ubuntu/comp90024/harvester/uploader.py
 
 - hosts: harvesterserver
-  become: yes  
+  tasks: 
   - name: Run harvester
     command: nohup python3 /home/ubuntu/comp90024/harvester/harvester.py &
