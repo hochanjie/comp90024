@@ -50,19 +50,19 @@ security_groups:
 # Instance
 instances:
   - name: webserver
-    instance_key_name: cloud
+    instance_key_name: group45
     instance_flavor: uom.mse.2c9g
     volumes: ['web-vol']
   - name: harvesterserver-1
-    instance_key_name: cloud
+    instance_key_name: group45
     instance_flavor: uom.mse.2c9g
     volumes: ['harvester-1-vol']
   - name: harvesterserver-2
-    instance_key_name: cloud
+    instance_key_name: group45
     instance_flavor: uom.mse.2c9g
     volumes: ['harvester-2-vol']
   - name: harvesterserver-3
-    instance_key_name: cloud
+    instance_key_name: group45
     instance_flavor: uom.mse.1c4g
     volumes: ['harvester-3-vol']
 
