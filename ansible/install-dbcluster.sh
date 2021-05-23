@@ -2,7 +2,7 @@
 # Created by Yilin Xu (1201608) from group 45 of COMP90024 2021 Semester 1 Assignment 2 at the University of Melbourne
 
 export declare -a nodes=()
-mapfile -t nodes < /home/ubuntu/ansible/IP.txt
+mapfile -t nodes < /home/ubuntu/comp90024/ansible/IP.txt
 export masternode=`echo ${nodes} | cut -f1 -d' '`
 export declare -a othernodes=`echo ${nodes[@]} | sed s/${masternode}//`
 export user='admin'
