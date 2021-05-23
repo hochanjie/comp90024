@@ -22,18 +22,21 @@ export class MapsComponent implements OnInit,AfterViewInit   {
     lng: number = 137;
     zoom:number = 4;   
     whichMap:number = 2; 
-    sa2Url:String = this._getMapData.getSA2_URL()
+    sa2Url:String = this._getMapData.getSA2_URL();
+    sa2Load:Boolean = false;
+    stateUrl:String = this._getMapData.getStateService();
     
     ngOnInit(): void {}
     
     ngAfterViewInit() {        
         this.agmMap.mapReady.subscribe(map => {
-            map.data.loadGeoJson(this.sa2Url);
+            map.data.loadGeoJson(this.stateUrl);
             map.setZoom(this.zoom);
             map.setCenter({lat: this.lat, lng: this.lng})
-            map.data.setStyle((feature) => {
-                return this.styleFunc(feature);
-            });
+            map.data.setStyle({
+                  fillColor: 'green',
+                    strokeWeight: 1
+                });
         });
     }
 
@@ -73,13 +76,39 @@ export class MapsComponent implements OnInit,AfterViewInit   {
     changemapRegion(e){
         this.geoJsonObject1 = "../../assets/mapBoundry/"+e.target.value+".json";
     }
-    changeScene(e){
-        this.whichMap = e.target.value
-        this.agmMap._mapsWrapper.getNativeMap().then((map) => {
-            map.data.setStyle((feature) => {
-                return this.styleFunc(feature);
+    changeScene(sc){
+        if(sc == 'R'){
+            this.whichMap = 3;
+            this.agmMap._mapsWrapper.getNativeMap().then((map) => {
+                if(this.sa2Load){
+                    map.data.forEach(function(feature) {
+                        map.data.remove(feature);
+                    });
+                    map.data.loadGeoJson(this.stateUrl);
+                    this.sa2Load = false;
+                }
+                map.data.setStyle({
+                  fillColor: 'green',
+                    strokeWeight: 1
+                });
             });
-        }); 
+        }else{
+            this.whichMap = sc;
+            this.agmMap._mapsWrapper.getNativeMap().then((map) => {
+                if(!this.sa2Load){
+                    map.data.forEach(function(feature) {
+                        map.data.remove(feature);
+                    });
+                    map.data.loadGeoJson(this.sa2Url);
+                    this.sa2Load = true;
+                }
+                map.data.setStyle((feature) => {
+                    return this.styleFunc(feature);
+                });
+            });
+        }
+        
+         
 
     }
 
