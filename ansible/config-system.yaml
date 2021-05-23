@@ -32,3 +32,13 @@
   become: yes
   roles:
     - role: config-harvester
+
+- hosts: localhost
+  tasks:
+  - name: Upload AURIN Dataset to CouchDB
+    command: python3 /home/ubuntu/comp90024/harvester/uploader.py
+
+- hosts: harvesterserver
+  become: yes  
+  - name: Run harvester
+    command: nohup python3 /home/ubuntu/comp90024/harvester/harvester.py &

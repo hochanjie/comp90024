@@ -8,26 +8,25 @@ homeless = open('/home/ubuntu/comp90024/AURIN Dataset/SA2_homeless_2016.json', '
 income = open('/home/ubuntu/comp90024/AURIN Dataset/SA2_income_2016.json', 'r')
 population = open('/home/ubuntu/comp90024/AURIN Dataset/SA2_population_2016.json', 'r')
 
-
 with open('/home/ubuntu/comp90024/ansible/IP.txt', 'r') as f:
-    ip = f.readline().strip()
+  ip = f.readline().strip()
 
-dbName = "AURIN"
+dbName = "aurin"
 couch = couchdb.Server('http://admin:group45@' + str(ip) + ':5984')
 
 try:
-    if dbName in couch:
-        db = couch[dbName]
-    else:
-        db = couch.create(dbName)
+  if dbName in couch:
+    db = couch[dbName]
+  else:
+    db = couch.create(dbName)
 except Exception as e:
-    print(e)
-    exit(-1)
+  print(e)
+  exit(-1)
 
 try:
-    db.save(json.load(sa2))
-    db.save(json.load(homeless))
-    db.save(json.load(income))
-    db.save(json.load(population))
+  db['sa2'] = json.load(sa2)
+  db['homeless'] = json.load(homeless)
+  db['income'] = json.load(income)
+  db['population'] = json.load(population)
 except Exception as e:
-    print(e)
+  print(e)
