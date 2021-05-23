@@ -1,3 +1,9 @@
 {
-    "apiBaseUrl": "http://172.26.131.35:5984"
+    "apiBaseUrl": "http://172.26.134.127:5984",
+    "auth":"admin:group45",
+    "cbd_ip":"172.26.134.127",
+    "cbd_port":"5984",
+    "design_doc_route":"/tweets/_design/TwitterData/_view/",
+    "reduce":"reduce=true&group_level=1",
+    "no_reduce":"reduce=false"
 }

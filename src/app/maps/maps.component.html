@@ -4,6 +4,7 @@
 </agm-map>
 -->
 
+<!--
 <select class="dropdown" (change)="changemapRegion($event)">
 
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -22,36 +23,23 @@
     <option value="vicRegions">vicRegions</option>
 
 </select>
-
-
-<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom"> 
-    
-<!--
-    <agm-marker 
-      *ngFor="let m of markers; let i = index"
-      (markerClick)="clickedMarker(m.label, i)"
-      [latitude]="m.lat"
-      [longitude]="m.lng"
-      [label]="m.label"
-      [markerDraggable]="m.draggable"
-      (dragEnd)="markerDragEnd(m, $event)">
-      
-        <agm-info-window>
-            <strong>InfoWindow content</strong>
-        </agm-info-window>
-    
-    </agm-marker>
 -->
-    
-     
-    <agm-data-layer [geoJson]="geoJsonObject" (layerClick)="clicked($event)" [style]="styleFunc"></agm-data-layer>
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-secondary active">
+    <input type="radio" name="options" (click)="changeScene('R')" id="option1" autocomplete="off" checked> Rest
+  </label>
+  <label class="btn btn-secondary">
+    <input type="radio" name="options" (click)="changeScene(0)" id="option2" autocomplete="off"> Income
+  </label>
+  <label class="btn btn-secondary">
+    <input type="radio" name="options" (click)="changeScene(1)" id="option3" autocomplete="off"> Population
+  </label>
+  <label class="btn btn-secondary">
+    <input type="radio" name="options" (click)="changeScene(2)" id="option3" autocomplete="off"> Homeless
+  </label>
+</div>
+
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">      
+    <agm-data-layer [geoJson]="geoJsonObject1" (layerClick)="clicked($event)" [style]="styleFunc"></agm-data-layer>
 </agm-map>
 
-<!--
-
-<ul>
-  <li *ngFor="let player of Players">
-   <h2>{{player.state}}</h2>
-  </li>
-</ul>
--->
