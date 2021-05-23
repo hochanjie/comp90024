@@ -1,31 +1,31 @@
 {
   "views": {
     "AllTweets": {
-      "map": "function (doc) {\n  emit(doc._id, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
+      "map": "function (doc) {\n  emit(doc._id, {location: doc.location, sentiment: doc.sentiment, timestamp: doc.timestamp, SA2_code: doc.SA2_code, SA2_name: doc.SA2_name, place: doc.place});\n}"
     },
-    "SentimentsByState": {
+    "SentimentsBySA2Code": {
       "reduce": "_stats",
-      "map": "function (doc) {\n  emit(doc.place.state, doc.sentiment);\n}"
+      "map": "function (doc) {\n  emit(doc.SA2_code, doc.sentiment);\n}"
     },
-    "TweetsByState": {
-      "reduce": "_count",
-      "map": "function (doc) {\n  emit(doc.place.state, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
-    },
-    "SentimentsByPlace": {
+    "SentimentsBySA2Name": {
       "reduce": "_stats",
-      "map": "function (doc) {\n  emit(doc.place.name, doc.sentiment);\n}"
+      "map": "function (doc) {\n  emit(doc.SA2_name, doc.sentiment);\n}"
     },
-    "TweetsByPlace": {
+    "TweetsBySA2Code": {
       "reduce": "_count",
-      "map": "function (doc) {\n  emit(doc.place.name, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
+      "map": "function (doc) {\n  emit(doc.SA2_code, {location: doc.location, sentiment: doc.sentiment, timestamp: doc.timestamp, SA2_code: doc.SA2_code, SA2_name: doc.SA2_name, place: doc.place});\n}"
+    },
+    "TweetsBySA2Name": {
+      "reduce": "_count",
+      "map": "function (doc) {\n  emit(doc.SA2_name, {location: doc.location, sentiment: doc.sentiment, timestamp: doc.timestamp, SA2_code: doc.SA2_code, SA2_name: doc.SA2_name, place: doc.place});\n}"
     },
     "TweetsByTime": {
       "reduce": "_count",
-      "map": "function (doc) {\n  emit(doc.timestamp, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
+      "map": "function (doc) {\n  emit(doc.timestamp, {location: doc.location, sentiment: doc.sentiment, timestamp: doc.timestamp, SA2_code: doc.SA2_code, SA2_name: doc.SA2_name, place: doc.place});\n}"
     },
     "TweetsBySentiment": {
       "reduce": "_count",
-      "map": "function (doc) {\n  emit(doc.sentiment, {text: doc.text, sentiment: doc.sentiment, coordinates: doc.location.coordinates, time: doc.timestamp, place: doc.place });\n}"
+      "map": "function (doc) {\n  emit(doc.sentiment, {location: doc.location, sentiment: doc.sentiment, timestamp: doc.timestamp, SA2_code: doc.SA2_code, SA2_name: doc.SA2_name, place: doc.place});\n}"
     }
   },
   "language": "javascript"
