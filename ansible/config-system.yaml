@@ -20,7 +20,8 @@
 - hosts: localhost
   tasks:
   - name: Install couchdb cluster
-    command: bash ./install-dbcluster.sh
+    shell: | 
+      bash ./install-dbcluster.sh
   
 
 - hosts: webserver
@@ -36,9 +37,14 @@
 - hosts: localhost
   tasks:
   - name: Upload AURIN Dataset to CouchDB
-    command: python3 /home/ubuntu/comp90024/harvester/uploader.py
+    shell: | 
+      python3 /home/ubuntu/comp90024/harvester/uploader.py
+  - name: Create views in CouchDB
+    shell: | 
+      Bash /home/ubuntu/comp90024/ansible/create-views.sh
 
 - hosts: harvesterserver
   tasks:
   - name: Run harvesters
-    command: nohup python3 /home/ubuntu/comp90024/harvester/harvester.py &
+    shell: | 
+      nohup python3 /home/ubuntu/comp90024/harvester/harvester.py &

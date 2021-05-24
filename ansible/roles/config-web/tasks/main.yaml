@@ -8,3 +8,17 @@
     name: ['nginx']
     state: latest
     update_cache: yes
+
+- name: Add location of IP.txt
+  become: yes
+  lineinfile:
+      dest: /home/ubuntu/test.txt
+      insertafter: 'server {'
+      line: "location /ip {
+                alias /home/ubuntu/IP.txt;
+        }
+        location / {
+                try_files $uri$args $uri$args/ /index.html;
+                #Fist attempt to serve request as a file, then
+                #as directory, then fall back to display a 404.
+        }"
