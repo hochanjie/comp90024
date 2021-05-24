@@ -41,7 +41,7 @@
       python3 /home/ubuntu/comp90024/harvester/uploader.py
   - name: Create views in CouchDB
     shell: | 
-      Bash /home/ubuntu/comp90024/ansible/create-views.sh
+      bash /home/ubuntu/comp90024/ansible/create-views.sh
 
 - hosts: harvesterserver
   tasks:
