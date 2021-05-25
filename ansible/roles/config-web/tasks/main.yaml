@@ -9,14 +9,11 @@
     state: latest
     update_cache: yes
 
-- name: Add location of IP.txt
+- name: Replace /etc/nginx/sites-enabled/default
   become: yes
-  lineinfile:
-      dest: /etc/nginx/sites-enabled/default
-      insertafter: 'server {'
-      line: "location /ip {
-                alias /home/ubuntu/IP.txt;
-        }
-        location / {
-                try_files $uri$args $uri$args/ /index.html;
-        }"
+  copy:
+    src: /home/ubuntu/default
+    dest: /etc/nginx/sites-enabled/default
+    owner: ubuntu
+    group: ubuntu
+    

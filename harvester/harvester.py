@@ -20,7 +20,7 @@ def searchTimeline(userID, depth=0):
   except tweepy.error.TweepError as e:
     print(e)
     return
-  if depth <= 3:
+  if depth <= 1:
     friends = appAPI.followers_ids(userID)
     friends.append(appAPI.friends_ids(userID))
     for friendID in friends:
