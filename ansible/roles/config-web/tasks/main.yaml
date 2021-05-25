@@ -8,12 +8,4 @@
     name: ['nginx']
     state: latest
     update_cache: yes
-
-- name: Replace /etc/nginx/sites-enabled/default
-  become: yes
-  copy:
-    src: /home/ubuntu/default
-    dest: /etc/nginx/sites-enabled/default
-    owner: ubuntu
-    group: ubuntu
     
