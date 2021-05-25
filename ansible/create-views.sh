@@ -5,7 +5,7 @@ IP=$(head -n 1 /home/ubuntu/comp90024/ansible/IP.txt)
 
 curl -X PUT http://admin:group45@$IP:5984/tweets
 
-curl -X PUT http://admin:group45@172.26.132.71:5984/tweets/_design/TwitterData -d '{
+curl -X PUT http://admin:group45@$IP:5984/tweets/_design/TwitterData -d '{
   "views": {
     "AvgSentimentsBySA2Code": {
       "map": "function (doc) {emit(doc.SA2_code, doc.sentiment);}",
