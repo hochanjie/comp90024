@@ -8,4 +8,25 @@
     name: ['nginx']
     state: latest
     update_cache: yes
-    
+
+- name: Edit /etc/nginx/sites-enabled/default
+  become: yes
+  lineinfile: 
+      path: /etc/nginx/sites-enabled/default
+      regexp: '^(.*)
+               location / {
+                       #First attempt to serve request as file, then
+                       #as directory, then fall back to displaying a 404.
+                       try_files $uri $uri/ =404;
+               }
+               (.*)$' 
+      line: 'location /ip {
+                alias /home/ubuntu/IP.txt;
+             }
+             location / {
+                     try_files $uri$args $uri$args/ /index.html;
+             }'
+
+- name: Restart Nginx
+  become: yes
+  service: name=nginx state=restarted
