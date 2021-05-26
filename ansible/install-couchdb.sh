@@ -8,7 +8,7 @@ echo "nodename couchdb@{$NODENAME}"
 # Set the password variable.
 echo "== setting password for couchdb ===="
 COUCHDB_PASSWORD=group45
-echo -e "$COUCHDB_PASSWORD" >> /home/ubuntu/CouchDB.txt
+echo "$COUCHDB_PASSWORD" >> /home/ubuntu/CouchDB.txt
 
 # Update cache.
 sudo apt-get update

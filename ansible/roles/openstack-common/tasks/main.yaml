@@ -10,11 +10,23 @@
     update_cache: yes
 
 - name: Update pip
+  become: yes
   pip:
     name: ['pip']
     state: latest
 
 - name: Install openstacksdk
+  become: yes
   pip:
     name: ['openstacksdk==0.52']
     state: latest
+
+- name: Install couchdb
+  become: yes
+  pip:
+    name: ['couchdb']
+    state:  latest
+
+- name: Avoid UNPROTECTED PRIVATE KEY FILE error
+  shell: |
+    chmod 600 ./keys/group45.key
