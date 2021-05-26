@@ -70,6 +70,16 @@ export class HomeComponent implements OnInit {
 
 
 
+
+        this._crudOps.getAVGSentimentsBySA2Name('Abbotsford',true).subscribe((data: any[])=>{
+              console.log("getAVGSentimentsBySA2NAme",data);
+            })
+        this._crudOps.getAVGSentimentsBySA2Name(undefined,true).subscribe((data: any[])=>{
+              console.log("getAVGSentimentsBySA2NAme",data);
+            })
+
+
+
         this._crudOps.getTweetsByCity(undefined,false).subscribe((data: any)=>{
                 this.markers = data.rows            
         })

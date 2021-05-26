@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ConfigService } from './service/config/config.service';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { OverviewComponent } from './overview/overview.component';
 
 
 
@@ -28,7 +29,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     NavbarComponent,
     SidebarComponent,
     ChartsComponent,
-    MapsComponent
+    MapsComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +47,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 		multi : true, 
 		 deps : [ConfigService], 
 		 useFactory : (configService : ConfigService) =>  () => configService.loadAppConfig()
+	},{ 
+	  provide : APP_INITIALIZER, 
+		multi : true, 
+		 deps : [ConfigService], 
+		 useFactory : (configService : ConfigService) =>  () => configService.loadAppUrlConfig()
 	}],
   bootstrap: [AppComponent]
 })

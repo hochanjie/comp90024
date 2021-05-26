@@ -3,6 +3,7 @@ import { Component, OnInit,ViewChild,AfterViewInit } from '@angular/core';
 import { AgmMap } from '@agm/core';
 
 import { GetMapDataService } from '../service/dataFetch/get-map-data.service';
+import { CrudOpsService } from '../service/RestApis/crud-ops.service';
 
 @Component({
   selector: 'app-maps',
@@ -14,6 +15,7 @@ export class MapsComponent implements OnInit,AfterViewInit   {
     
     constructor(
          private _getMapData: GetMapDataService,
+          private _crudOps: CrudOpsService
     ) { }
 
     geoJsonObject: any;
@@ -22,7 +24,7 @@ export class MapsComponent implements OnInit,AfterViewInit   {
     lng: number = 137;
     zoom:number = 4;   
     whichMap:number = 2; 
-    sa2Url:String = this._getMapData.getSA2_URL();
+//    sa2Url:String = this._getMapData.getSA2_URL();
     sa2Load:Boolean = false;
     stateUrl:String = this._getMapData.getStateService();
     
@@ -48,6 +50,8 @@ export class MapsComponent implements OnInit,AfterViewInit   {
     styleFunc = (feature) => { 
         
         let name = feature.getProperty('sa2_name16');
+        
+        
         let color = "#FFFFFF"
         
         if (this.whichMap == 0){
@@ -65,6 +69,14 @@ export class MapsComponent implements OnInit,AfterViewInit   {
             let homeless = this._getMapData.getDataFromSA2NameHomeless(name)
             color = this._getMapData.homelessColorConverter(homeless)
         }
+//        else if (this.whichMap == 3){
+//            this._crudOps.getAVGSentimentsBySA2Name(name,true).subscribe((data: any[])=>{
+//          
+//            if (data.rows.length > 0){
+//                console.log("getAVGSentimentsBySA2NAme",name,data.rows[0]);
+//            }
+//        });
+//        }
         
         return {
             fillColor: color,
@@ -73,10 +85,8 @@ export class MapsComponent implements OnInit,AfterViewInit   {
         };
     }
     
-    changemapRegion(e){
-        this.geoJsonObject1 = "../../assets/mapBoundry/"+e.target.value+".json";
-    }
     changeScene(sc){
+        
         if(sc == 'R'){
             this.whichMap = 3;
             this.agmMap._mapsWrapper.getNativeMap().then((map) => {
@@ -99,7 +109,7 @@ export class MapsComponent implements OnInit,AfterViewInit   {
                     map.data.forEach(function(feature) {
                         map.data.remove(feature);
                     });
-                    map.data.loadGeoJson(this.sa2Url);
+                    map.data.addGeoJson(this._getMapData.getSA2_URL());
                     this.sa2Load = true;
                 }
                 map.data.setStyle((feature) => {

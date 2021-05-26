@@ -8,9 +8,11 @@ export class ConfigService {
     
     private appConfig: any;
     private http : HttpClient;
+    private apiUrl : string;
   
     constructor(http: HttpClient) {
         this.http = http;
+        
     }
 
     loadAppConfig() {
@@ -20,9 +22,19 @@ export class ConfigService {
             this.appConfig = config;
         });
     }
+    loadAppUrlConfig() {
+        return this.http.get('/ip', {responseType: 'text'})
+            .toPromise()
+            .then(data => {
+            let ips = data.split(/[\r\n]+/)
+            this.apiUrl = "http://"+ips[1]+":5984";
+        });
+    }
+    
 
     get apiBaseUrl() : string {
-        return this.appConfig.apiBaseUrl;
+//        return this.appConfig.apiBaseUrl;         
+        return this.apiUrl;         
     }
     get auth() : string {
         return this.appConfig.auth;
@@ -41,6 +53,9 @@ export class ConfigService {
     }
     get no_reduce() : string {
         return this.appConfig.no_reduce;
+    }
+    get aurin_doc_route() : string {
+        return this.appConfig.aurin_doc_route;
     }
 }
 

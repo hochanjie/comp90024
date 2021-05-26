@@ -8,13 +8,14 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ChartsComponent } from './charts/charts.component';
 import { MapsComponent } from './maps/maps.component';
+import { OverviewComponent } from './overview/overview.component';
 
 
 const routes: Routes = [
     
     {
         path:'',
-        component:HomeComponent
+        component:OverviewComponent
     },
     {
         path:'home',

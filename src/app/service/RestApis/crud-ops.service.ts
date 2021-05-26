@@ -16,6 +16,7 @@ export class CrudOpsService {
     private cbd_ip:string = this.configService.cbd_ip;
     private cbd_port:string = this.configService.cbd_port;
     private design_doc_route:string = this.configService.design_doc_route;
+    private aurin_doc_route:string = this.configService.aurin_doc_route;
     private reduce:string = this.configService.reduce;
     private no_reduce:string = this.configService.no_reduce;
     
@@ -60,6 +61,31 @@ export class CrudOpsService {
 //    //        return this.httpclient.get('${API_URL}/${view}?${red}');
 //          }
 //    }
+    
+    // Get sentiments by city
+    // If reducing, will provide summary statistics of the sentiments of that city instead
+    // If provided a city as a key, will give the sentiments of tweets in that city
+    public getAvgSentimentsByCity(key : string, reduce: boolean) : Observable<any> {
+      let view = "AvgSentimentsByCity";
+      let red;
+      if (reduce) {
+        red = this.reduce;
+      }
+      else {
+        red = this.no_reduce;
+      }
+
+      if (key) {
+          return this.httpclient.get(this.baseUrl+this.design_doc_route+view+'?key='+'"'+key+'"'+'&'+red, this.httpOptions);
+//        return this.httpclient.get('${API_URL}/${view}?key=\"${key}\"&${red}');
+      } 
+      else {
+          return this.httpclient.get(this.baseUrl+this.design_doc_route+view+'?'+red, this.httpOptions);
+//        return this.httpclient.get('${API_URL}/${view}?${red}');
+      }
+    }
+    
+    
     // Get sentiments by city
     // If reducing, will provide summary statistics of the sentiments of that city instead
     // If provided a city as a key, will give the sentiments of tweets in that city
@@ -127,6 +153,10 @@ export class CrudOpsService {
 //        return this.httpclient.get('${API_URL}/${view}?${red}');
       }    
     }
+    
+    
+    
+    
     // Get sentiments by state
     // If reducing, will provide summary statistics of the sentiments of that state instead
     // If provided a state as a key, will give the sentiments of tweets in that state
@@ -155,6 +185,29 @@ export class CrudOpsService {
     // If provided a SA2_name as a key, will give the sentiments of tweets in that SA2_name
     public getSentimentsBySA2NAme(key : string, reduce: boolean) : Observable<any> {
       let view = "SentimentsBySA2Name";
+        let red;
+      if (reduce) {
+        red = this.reduce;
+      }
+      else {
+        red = this.no_reduce;
+      }
+
+      if (key) {
+          return this.httpclient.get(this.baseUrl+this.design_doc_route+view+'?key='+'"'+key+'"'+'&'+red, this.httpOptions);
+//        return this.httpclient.get('${API_URL}/${view}?key=\"${key}\"&${red}');
+      } 
+      else {
+          return this.httpclient.get(this.baseUrl+this.design_doc_route+view+'?'+red, this.httpOptions);
+//        return this.httpclient.get('${API_URL}/${view}?${red}');
+      }    
+    }
+    
+    // Get sentiments by SA2_name
+    // If reducing, will provide summary statistics of the sentiments of that SA2_name instead
+    // If provided a SA2_name as a key, will give the sentiments of tweets in that SA2_name
+    public getAVGSentimentsBySA2Name(key : string, reduce: boolean) : Observable<any> {
+      let view = "AvgSentimentsBySA2Name";
         let red;
       if (reduce) {
         red = this.reduce;
@@ -309,4 +362,23 @@ export class CrudOpsService {
 //        return this.httpclient.get('${API_URL}/${view}?${red}');
       }    
     }
+    
+    public getSa2() : Observable<any> {
+      let view = "/sa2";
+      return this.httpclient.get(this.baseUrl+this.aurin_doc_route+view, this.httpOptions);
+    }
+    public getHomeless_obj() : Observable<any> {
+      let view = "/homeless";
+      return this.httpclient.get(this.baseUrl+this.aurin_doc_route+view, this.httpOptions);
+    }
+    public getIncome_obj() : Observable<any> {
+      let view = "/income";
+      return this.httpclient.get(this.baseUrl+this.aurin_doc_route+view, this.httpOptions);
+    }
+    public getPopulation_obj() : Observable<any> {
+      let view = "/population";
+      return this.httpclient.get(this.baseUrl+this.aurin_doc_route+view, this.httpOptions);
+    }
+    
+    
 }

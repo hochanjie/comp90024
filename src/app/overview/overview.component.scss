@@ -1,0 +1,52 @@
+.container-fluid{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.jumbotron .list-group-item{
+    background-color: unset;
+}
+
+.jumbotron .list-group-flush>.list-group-item{
+    border-width:0;
+}
+
+.card > .card-header > fa-icon{
+    float: right;
+    cursor: pointer;
+}
+
+ul > li {
+    cursor: pointer;
+}
+
+.list-group-item.active::after{
+    content: "";
+    position: absolute;
+    right: -20px;
+    top: 0px;
+    height: 0;
+    width: 0;
+    border-left: 20px solid #bfbfbf;
+    border-bottom: 24px solid transparent;
+    border-top: 24px solid transparent;
+    clear: both;
+}
+
+.list-group-item.active{
+    background-color: unset !important;
+    color: black !important;
+    border-top:    1px solid #ebebeb  !important;
+    border-right:  1px solid black !important;
+    border-bottom: 1px solid black !important;
+    border-left:   0px solid black !important;
+
+}
+.float-right{
+    float: right;
+}
+
+agm-map {
+    width: 100%;
+    height: 100%;
+}
