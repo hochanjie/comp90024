@@ -80,32 +80,32 @@ export class GetMapDataService {
     incomeColorConverter(income){
         if (income == null){
             // white
-            return "#FFFFFF"
+            return {color:"#FFFFFF",range:null}
         }
 
         if (income < 30000){
             //lightblue
-            return "#ADD8E6";
+            return {color:"#ADD8E6",range:30000};
 
         }else if(income < 45000){
             //lightskyblue
-            return "#87CEFA";
+            return {color:"#87CEFA",range:45000};
 
         }else if(income < 60000){
             //deepskyblue
-            return "#00BFFF";
+            return {color:"#00BFFF",range:60000};
 
         }else if(income < 75000){
             //dodgerblue
-            return "#1E90FF";
+            return {color:"#1E90FF",range:75000};
 
         }else if(income < 90000){
             //blue
-            return "#0000FF";
+            return {color:"#0000FF",range:90000};
 
         }else {
             //darkblue
-            return "#00008B";
+            return {color:"#00008B",range:10000};
         }
 
     }
@@ -114,32 +114,32 @@ export class GetMapDataService {
     populationColorConverter(population){
         if (population == null){
             // white
-            return "#FFFFFF"
+            return {color:"#FFFFFF",range:null}
         }
 
         if (population < 3000){
             //lightblue
-            return "#ADD8E6";
+            return {color:"#ADD8E6",range:3000};
 
         }else if(population < 6000){
             //lightskyblue
-            return "#87CEFA";
+            return {color:"#87CEFA",range:6000};
 
         }else if(population < 10000){
             //deepskyblue
-            return "#00BFFF";
+            return {color:"#00BFFF",range:10000};
 
         }else if(population < 14000){
             //dodgerblue
-            return "#1E90FF";
+            return {color:"#1E90FF",range:14000};
 
         }else if(population < 18000){
             //blue
-            return "#0000FF";
+            return {color:"#0000FF",range:18000};
 
         }else {
             //darkblue
-            return "#00008B";
+            return {color:"#00008B",range:20000};
         }
 
     }
@@ -148,32 +148,32 @@ export class GetMapDataService {
     homelessColorConverter(homeless){
         if (homeless == null){
             // white
-            return "#FFFFFF"
+            return {color:"#FFFFFF",range:null}
         }
 
         if (homeless < 50){
             //lightblue
-            return "#ADD8E6";
+            return {color:"#ADD8E6",range:50};
 
         }else if(homeless < 100){
             //lightskyblue
-            return "#87CEFA";
+            return {color:"#87CEFA",range:100};
 
         }else if(homeless < 150){
             //deepskyblue
-            return "#00BFFF";
+            return {color:"#00BFFF",range:150};
 
         }else if(homeless < 200){
             //dodgerblue
-            return "#1E90FF";
+            return {color:"#1E90FF",range:200};
 
         }else if(homeless < 300){
             //blue
-            return "#0000FF";
+            return {color:"#0000FF",range:300};
 
         }else {
             //darkblue
-            return "#00008B";
+            return {color:"#00008B",range:400};
         }
 
     }
@@ -182,48 +182,29 @@ export class GetMapDataService {
     sentiColorConverter(sentiScore){
         if (sentiScore == 0){
             // white
-            return "#FFFFFF"
+            return {color:"#FFFFFF",range:0}
         }
-        if (sentiScore < 0.1){
+        if (sentiScore < 0.2){
             //lightblue
-            return "#ADD8E6";
+            return {color:"#ADD8E6",range:0.2};
 
-        }else if(sentiScore < 0.2){
+        }else if(sentiScore < 0.4){
             //lightskyblue
-            return "#87CEFA";
-
-        }else if(sentiScore < 0.3){
-            //deepskyblue
-            return "#00BFFF";
-
-        }
-        else if(sentiScore < 0.4){
-            //dodgerblue
-            return "#1E90FF";
-
-        }else if(sentiScore < 0.5){
-            //blue
-            return "#0000FF";
+            return {color:"#87CEFA",range:0.4};
 
         }else if(sentiScore < 0.6){
-            //blue
-            return "#AAAAFF";
+            //deepskyblue
+            return {color:"#00BFFF",range:0.6};
 
-        }else if(sentiScore < 0.7){
-            //blue
-            return "#436EEE";
+        }
+        else if(sentiScore < 0.8){
+            //dodgerblue
+            return {color:"#1E90FF",range:0.8};
 
-        }else if(sentiScore < 0.8){
+        }else{
             //blue
-            return "#838EDE";
+            return {color:"#2F2F4F",range:1};
 
-        }else if(sentiScore < 0.9){
-            //blue
-            return "#2E37FE";
-
-        }else {
-            //darkblue
-            return "#2F2F4F";
         }
 
     }

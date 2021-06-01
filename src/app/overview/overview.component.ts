@@ -15,7 +15,6 @@ import { Label,Color,MultiDataSet,SingleDataSet } from 'ng2-charts';
 })
 export class OverviewComponent implements OnInit,AfterViewInit {
       @ViewChild(AgmMap) agmMap;
-
     
     constructor(
         private _getMapData: GetMapDataService,
@@ -36,21 +35,25 @@ export class OverviewComponent implements OnInit,AfterViewInit {
     currentCity:any;
     getSentimentsByCity:any;
     getAvgSentimentsByCity:any;
-    
+    colorList = [];
+    rangeList = [];
     selectedScene:string = 'R';
     scenarios = [{name:'Australia',clickId:'R'},{name:'Income',clickId:'0'},{name:'Population',clickId:'1'},{name:'Homeless',clickId:'2'},{name:'Sentiments',clickId:'3'}]
     
+    selectedChart:string = 'R';
+    scenariosChart = [{name:'Australia',clickId:'R'},{name:'Income',clickId:'income'},{name:'Density',clickId:'density'},{name:'Homeless Rate',clickId:'homelessRate'},{name:'Sentiments',clickId:'senti'}]
+    
     selectedCity:string;
-        
+    status: boolean = false;
+    status1: boolean = false;
+    chartDefault: boolean = true;
+    bar:Boolean = true;
+    radar:Boolean = false;    
     
     ngOnInit(): void {
-//        this._crudOps.getSentimentsByCity(undefined,true).subscribe((data: any)=>{
-//            this.getSentimentsByCity = data.rows;
-//        });  
         this._crudOps.getAvgSentimentsByCity(undefined,true).subscribe((data: any)=>{
             this.getSentimentsByCity = data.rows;
-        });  
-      
+        });       
     }
     
     
@@ -73,10 +76,38 @@ export class OverviewComponent implements OnInit,AfterViewInit {
             this.currentCity = cityName;
         })
     }
+
+    changeBar(barName){
+        console.log(barName);
+        if(barName == 'bar'){
+            this.bar = true;
+            this.radar = false;
+        }else{
+            this.radar = true;
+            this.bar = false;
+        }
+    }
+
+    containsObject(obj, list) {
+        var x;
+        for (x in list) {
+            if (list.hasOwnProperty(x) && list[x] === obj) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     
+    clicked(clickEvent) {
+        console.log(clickEvent);
+    }
+
     changeScene(sc){
         this.showScene = true;
         this.selectedScene = sc;
+        this.colorList = [];
+        this.rangeList = [];
         if(sc == 'R'){
             this.whichMap = 4;
             this.agmMap._mapsWrapper.getNativeMap().then((map) => {
@@ -103,9 +134,18 @@ export class OverviewComponent implements OnInit,AfterViewInit {
                     this.sa2Load = true;
                 }
                 map.data.setStyle((feature) => {
+                   
+                    if(!this.colorList.includes(this.styleFunc(feature).fillColor)){
+                        this.colorList.push(this.styleFunc(feature).fillColor)
+                        
+                        this.rangeList.push(this.styleFunc(feature).range)
+                        let tempList = this.rangeList.sort((a, b) => a - b)
+                        this.rangeList = tempList
+                    }
                     return this.styleFunc(feature);
                 });
             });
+            console.log(this.rangeList);
         }
     }
     
@@ -113,31 +153,35 @@ export class OverviewComponent implements OnInit,AfterViewInit {
         
         let name = feature.getProperty('sa2_name16');
         let color = "#FFFFFF"
+        let range;
         
         if (this.whichMap == 0){
             //THe income map color
             let income_value = this._getMapData.getDataFromSA2NameIncome(name);
-            color = this._getMapData.incomeColorConverter(income_value)
+            color = this._getMapData.incomeColorConverter(income_value).color
+            range = this._getMapData.incomeColorConverter(income_value).range
         }
         else if (this.whichMap == 1){
             //the population map color
             let population = this._getMapData.getDataFromSA2NamePopulation(name)
-            color = this._getMapData.populationColorConverter(population)            
+            color = this._getMapData.populationColorConverter(population).color            
+            range = this._getMapData.populationColorConverter(population).range           
         }
         else if (this.whichMap == 2){
             //the homeless map color
             let homeless = this._getMapData.getDataFromSA2NameHomeless(name)
-            color = this._getMapData.homelessColorConverter(homeless)
+            color = this._getMapData.homelessColorConverter(homeless).color
+            range = this._getMapData.homelessColorConverter(homeless).range
         }
         else if(this.whichMap == 3){
             let sentiScore = this._getMapData.getDataSenti(name)
-            color = this._getMapData.sentiColorConverter(sentiScore)
+            color = this._getMapData.sentiColorConverter(sentiScore).color
+            range = this._getMapData.sentiColorConverter(sentiScore).range
         }
-        
         return {
             fillColor: color,
             strokeWeight: 1,
-            clickable: false
+            range:range
         };
     }
     
@@ -174,46 +218,35 @@ export class OverviewComponent implements OnInit,AfterViewInit {
     }
 
     loadChart(scene){
+        this.selectedChart = scene;
         if(scene == 'income'){
-            this.income = true;
-            this.density = false;
-            this.radarChartLabels = ['Melbourne', 'Sydney', 'Brisbane', 'Perth', 'Adelaide']
-            this.radarChartData = [{ data: [this._getChartData.getMelbourneChartData().income, this._getChartData.getSydneyChartData().income, this._getChartData.getBrisbaneChartData().income, this._getChartData.getPerthChartData().income, this._getChartData.getAdelaideChartData().income], label: 'income' }];
+            this.chartDefault = false;
+            this.barChartData = [{ data: [this._getChartData.getMelbourneChartData().income, this._getChartData.getSydneyChartData().income, this._getChartData.getBrisbaneChartData().income, this._getChartData.getPerthChartData().income, this._getChartData.getAdelaideChartData().income], label: 'income' }];
         }else if(scene == 'density'){
-
-            this.density = true;
-            this.income = false;
-            this.barChartLabels = ['Melbourne', 'Sydney', 'Brisbane', 'Perth', 'Adelaide']
+            this.chartDefault = false;
             this.barChartData = [{ data: [this._getChartData.getMelbourneChartData().density, this._getChartData.getSydneyChartData().density, this._getChartData.getBrisbaneChartData().density, this._getChartData.getPerthChartData().density, this._getChartData.getAdelaideChartData().density], label: 'Density' }];
         }else if(scene == 'homelessRate'){
-            this.income = true;
-            this.density = false;
-            this.barChartLabels = ['Melbourne', 'Sydney', 'Brisbane', 'Perth', 'Adelaide']
-            this.radarChartData = [{ data: [this._getChartData.getMelbourneChartData().homeless_rate, this._getChartData.getSydneyChartData().homeless_rate, this._getChartData.getBrisbaneChartData().homeless_rate, this._getChartData.getPerthChartData().homeless_rate, this._getChartData.getAdelaideChartData().homeless_rate], label: 'homelessRate' }];
+            this.chartDefault = false;
+            this.barChartData = [{ data: [this._getChartData.getMelbourneChartData().homeless_rate, this._getChartData.getSydneyChartData().homeless_rate, this._getChartData.getBrisbaneChartData().homeless_rate, this._getChartData.getPerthChartData().homeless_rate, this._getChartData.getAdelaideChartData().homeless_rate], label: 'homelessRate' }];
             
         }else if(scene == 'senti'){
-            this.density = true;
-            this.income = false;
+            this.chartDefault = false;
             let dataNew:any[] = [];
             for (let i = 0, len = this.getSentimentsByCity.length; i < len; i++) {
                 dataNew.push(this.round(this.getSentimentsByCity[i].value,5))
             }
-            this.barChartLabels = ['Melbourne', 'Sydney', 'Brisbane', 'Perth', 'Adelaide']
             this.barChartData = [{ data: dataNew, label: 'Sentiments' }];
+        }else{
+            this.chartDefault = true;
         }
-        
-        
-
 
 
     }
 
-    income:Boolean = false;
-    density:Boolean = false;
 
 //    BarChart
     barChartOptions: ChartOptions = {responsive: true};
-      barChartLabels: Label[] = [];
+      chartLabels: Label[] = ['Melbourne', 'Sydney', 'Brisbane', 'Perth', 'Adelaide'];
       barChartType: ChartType = 'bar';
       barChartLegend = true;
       barChartPlugins = [];
@@ -235,9 +268,12 @@ export class OverviewComponent implements OnInit,AfterViewInit {
         pieChartPlugins = [];
     
 
-    status: boolean = false;
+    
     dropdownF(){
         this.status = !this.status; 
+    }
+    dropdownF1(){
+        this.status1 = !this.status1; 
     }
     round(value, precision) {
         var multiplier = Math.pow(10, precision || 0);

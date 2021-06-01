@@ -45,6 +45,9 @@ ul > li {
 .float-right{
     float: right;
 }
+#legend { list-style: none;     text-align: center; padding: 0; margin: 0; }
+#legend li { margin: 0 0 2px 0; padding: 0 0 0 12px; display: inline-flex;}
+#legend div { width: 100%; background-color: white; padding: 0 10px 0px 2px; }
 
 agm-map {
     width: 100%;

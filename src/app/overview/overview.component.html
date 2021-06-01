@@ -44,23 +44,14 @@
                                  </li>
                             </ul>
                             
-                            <br><br><br><br>
-<!--
-                            <h6 class="card-subtitle mb-2 text-muted">Tweets By city</h6>
-                            
-                            <ul id="grouplist" class="list-group list-group-flush">
-                                 <li class="list-group-item" [ngClass]="{'active': selectedCity == city.key}" (click)="changeCity(city.key)"  *ngFor="let city of getSentimentsByCity">
-                                    {{city.key}},{{city.value.count}},{{city.value.sum}}
-                                 </li>
-                            </ul>
--->
+                            <br><br><br><br><br><br>
                         </div>
                         <div class="col-md-10">
-                            <!-- Example single danger button -->
                             <div class="btn-group float-right">
                               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" (click)="dropdownF()">
                                 Filter by city
                               </button>
+                                
                               <ul class="dropdown-menu" [ngClass]="status ? 'show' : 'noshow'">                                  
                                 <li><a class="dropdown-item" (click)="cityZoom('Australia')">Australia</a></li>  
                                 <li><a class="dropdown-item" (click)="cityZoom('Melbourne')">Melbourne</a></li>
@@ -70,30 +61,19 @@
                                 <li><a class="dropdown-item" (click)="cityZoom('Adelaide')">Adelaide</a></li>
                               </ul>
                             </div>
+                            
+                            <ul id="legend">
+                                 <li *ngFor="let col of colorList; let i = index" [style.background-color]="col">
+                                    <div [style.background-color]="white">{{rangeList[i]}}</div>
+                                 </li>
+                            </ul>
+                            
                             <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">      
-                                <agm-data-layer [geoJson]="geoJsonObject" ></agm-data-layer>
+                                <agm-data-layer [geoJson]="geoJsonObject" (layerClick)="clicked($event)">
+                                </agm-data-layer>
                             </agm-map>
-                        </div>
-<!--
-                        <ng-template #showAna>
-                            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
-                                <ng-container *ngFor="let m of markers; let i = index">
-                                    <agm-marker *ngIf="m.value.city == currentCity"
-                                      [latitude]="m.value.location[1]"
-                                      [longitude]="m.value.location[0]">
-
-                                        <agm-info-window>
-                                            <strong>SA2_name - {{m.value.SA2_name}}</strong><br>
-                                            <strong>city - {{m.value.city}}</strong><br>
-                                            <strong>sentiment - {{m.value.sentiment}}</strong><br>
-                                        </agm-info-window>
-
-                                    </agm-marker>
-                                </ng-container>
-                            </agm-map>
-                        </ng-template>
--->
-                        
+                            
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -106,48 +86,47 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
-                            
-                            <br><br><br><br>
                             <h6 class="card-subtitle mb-2 text-muted">Scenarios</h6>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item active">Australia State</li>
-                                <li class="list-group-item" (click)="loadChart('income')">Income</li>
-                                <li class="list-group-item" (click)="loadChart('density')">Density</li>
-                                <li class="list-group-item" (click)="loadChart('homelessRate')">Homeless Rate</li>
-                                <li class="list-group-item" (click)="loadChart('senti')">Sentiments</li>
-                            </ul>
                             <br><br>
-<!--
-                            <h6 class="card-subtitle mb-2 text-muted">Tweets By city</h6>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Melbourne</li>
-                                <li class="list-group-item">Sydney</li>
-                                <li class="list-group-item">Brisbane</li>
-                                <li class="list-group-item">Perth </li>
-                                <li class="list-group-item">Adelaide </li>
-                              </ul>
--->
+                            <ul id="grouplist" class="list-group list-group-flush">
+                                 <li class="list-group-item" [ngClass]="{'active': selectedChart == scene.clickId}" (click)="loadChart(scene.clickId)"  *ngFor="let scene of scenariosChart">
+                                    {{ scene.name }}
+                                 </li>
+                            </ul>
+                            
+                            <br><br><br><br><br><br>
                         </div>
                         <div class="col-md-10">
-                            <div class="chart-wrapper" *ngIf="income">
+                            <div class="btn-group float-right">
+                                  <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" (click)="dropdownF1()">
+                                    Change Chart Type
+                                  </button>
+                                  <ul class="dropdown-menu" [ngClass]="status1 ? 'show' : 'noshow'">                                  
+                                    <li><a class="dropdown-item" (click)="changeBar('bar')">Bar</a></li>  
+                                    <li><a class="dropdown-item" (click)="changeBar('redar')">Redar</a></li>
+                                  </ul>
+                                </div>
+                            
+                            <div class="chart-wrapper" *ngIf="radar && !chartDefault">
                                     <canvas baseChart
-                                    [datasets]="radarChartData"
+                                    [datasets]="barChartData"
                                     [options]="radarChartOptions"
-                                    [labels]="radarChartLabels"
+                                    [labels]="chartLabels"
                                     [chartType]="radarChartType">
                                   </canvas>
                                 </div>
-                            <div class="chart-wrapper" *ngIf="density">
+
+                            <div class="chart-wrapper" *ngIf="bar && !chartDefault" >
                                 <canvas baseChart 
                                 [datasets]="barChartData"
-                                [labels]="barChartLabels"
+                                [labels]="chartLabels"
                                 [options]="barChartOptions"
                                 [plugins]="barChartPlugins"
                                 [legend]="barChartLegend"
                                 [chartType]="barChartType">
                               </canvas>
                             </div>
-                            <div class="chart-wrapper">
+                            <div class="chart-wrapper" *ngIf="chartDefault">
                                 <canvas baseChart 
                                 [data]="pieChartData" 
                                 [labels]="pieChartLabels" 
